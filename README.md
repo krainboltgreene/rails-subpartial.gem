@@ -1,5 +1,5 @@
 rails-subpartial
---------
+----------------
 
   - [![Quality](http://img.shields.io/codeclimate/github/krainboltgreene/rails-subpartial.gem.svg?style=flat-square)](https://codeclimate.com/github/krainboltgreene/rails-subpartial.gem)
   - [![Coverage](http://img.shields.io/codeclimate/coverage/github/krainboltgreene/rails-subpartial.gem.svg?style=flat-square)](https://codeclimate.com/github/krainboltgreene/rails-subpartial.gem)
