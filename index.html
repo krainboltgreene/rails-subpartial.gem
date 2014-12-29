@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Rails-subpartial.gem by krainboltgreene</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Rails-subpartial.gem</h1>
+        <p>Allow rails to do subfolder views</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/krainboltgreene/rails-subpartial.gem" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/krainboltgreene/rails-subpartial.gem/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/krainboltgreene/rails-subpartial.gem/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <ul>
+<li><a href="https://codeclimate.com/github/krainboltgreene/rails-subpartial.gem"><img src="http://img.shields.io/codeclimate/github/krainboltgreene/rails-subpartial.gem.svg?style=flat-square" alt="Quality"></a></li>
+<li><a href="https://codeclimate.com/github/krainboltgreene/rails-subpartial.gem"><img src="http://img.shields.io/codeclimate/coverage/github/krainboltgreene/rails-subpartial.gem.svg?style=flat-square" alt="Coverage"></a></li>
+<li><a href="https://travis-ci.org/krainboltgreene/rails-subpartial.gem"><img src="http://img.shields.io/travis-ci/krainboltgreene/rails-subpartial.gem.svg?style=flat-square" alt="Build"></a></li>
+<li><a href="https://gemnasium.com/krainboltgreene/rails-subpartial.gem"><img src="http://img.shields.io/gemnasium/krainboltgreene/rails-subpartial.gem.svg?style=flat-square" alt="Dependencies"></a></li>
+<li><a href="https://rubygems.org/gems/rails-subpartial"><img src="http://img.shields.io/gem/dtv/rails-subpartial.svg?style=flat-square" alt="Downloads"></a></li>
+<li><a href="http://github.com/krainboltgreene/rails-subpartial.gem/tags"><img src="http://img.shields.io/github/tag/krainboltgreene/rails-subpartial.gem.svg?style=flat-square" alt="Tags"></a></li>
+<li><a href="http://github.com/krainboltgreene/rails-subpartial.gem/releases"><img src="http://img.shields.io/github/release/krainboltgreene/rails-subpartial.gem.svg?style=flat-square" alt="Releases"></a></li>
+<li><a href="http://github.com/krainboltgreene/rails-subpartial.gem/issues"><img src="http://img.shields.io/github/issues/krainboltgreene/rails-subpartial.gem.svg?style=flat-square" alt="Issues"></a></li>
+<li><a href="http://opensource.org/licenses/MIT"><img src="http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="License"></a></li>
+<li><a href="https://rubygems.org/gems/rails-subpartial"><img src="http://img.shields.io/gem/v/rails-subpartial.svg?style=flat-square" alt="Version"></a></li>
+</ul>
+
+<p>Lets say you have this view:</p>
+
+<div class="highlight highlight-erb"><pre># app/views/posts/index.html.erb
+
+&lt;<span class="pl-ent">ol</span> <span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>posts<span class="pl-pds">"</span></span>&gt;
+  <span class="pl-pse">&lt;%</span><span class="pl-s2"> <span class="pl-vo">@posts</span>.each <span class="pl-k">do </span>|<span class="pl-vo">post</span>| </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+    &lt;<span class="pl-ent">li</span> <span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>post<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s1"><span class="pl-pds">"</span>post_<span class="pl-pse">&lt;%=</span><span class="pl-s2"> post.id </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span><span class="pl-pds">"</span></span>&gt;
+      &lt;<span class="pl-ent">header</span>&gt;
+        <span class="pl-pse">&lt;%=</span><span class="pl-s2"> post.title </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+      &lt;/<span class="pl-ent">header</span>&gt;
+
+      &lt;<span class="pl-ent">summary</span>&gt;
+        <span class="pl-pse">&lt;%=</span><span class="pl-s2"> post.summary </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+      &lt;/<span class="pl-ent">summary</span>&gt;
+    &lt;/<span class="pl-ent">li</span>&gt;
+  <span class="pl-pse">&lt;%</span><span class="pl-s2"> <span class="pl-k">end</span> </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+&lt;/<span class="pl-ent">ol</span>&gt;</pre></div>
+
+<p>You might want to simplify it thusly:</p>
+
+<div class="highlight highlight-erb"><pre># app/views/posts/index.html.erb
+
+&lt;<span class="pl-ent">ol</span> <span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>posts<span class="pl-pds">"</span></span>&gt;
+  <span class="pl-pse">&lt;%=</span><span class="pl-s2"> render <span class="pl-c1">partial:</span> <span class="pl-s1"><span class="pl-pds">"</span>post<span class="pl-pds">"</span></span>, <span class="pl-c1">collection:</span> <span class="pl-vo">@posts</span> </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+&lt;/<span class="pl-ent">ol</span>&gt;</pre></div>
+
+<div class="highlight highlight-erb"><pre>&lt;<span class="pl-ent">li</span> <span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>post<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s1"><span class="pl-pds">"</span>post_<span class="pl-pse">&lt;%=</span><span class="pl-s2"> post.id </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span><span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">header</span>&gt;
+    <span class="pl-pse">&lt;%=</span><span class="pl-s2"> post.title </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+  &lt;/<span class="pl-ent">header</span>&gt;
+
+  &lt;<span class="pl-ent">summary</span>&gt;
+    <span class="pl-pse">&lt;%=</span><span class="pl-s2"> post.summary </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+  &lt;/<span class="pl-ent">summary</span>&gt;
+&lt;/<span class="pl-ent">li</span>&gt;</pre></div>
+
+<p>Rails will look for the partial in these places (in this order):</p>
+
+<ul>
+<li><code>app/views/posts/_post.html.erb</code></li>
+<li><code>app/views/application/_post.html.erb</code></li>
+<li><code>app/views/layouts/_post.html.erb</code></li>
+</ul>
+
+<p>This is fine until you need to use <code>_post.html.erb</code> for a partial in a different context, with different markup.</p>
+
+<p>You have two choices:</p>
+
+<ol>
+<li>Rename the file to <code>_index_post.html.erb</code> or similar.</li>
+<li>Stop using partials.</li>
+</ol>
+
+<p>So this cool dude made a pull request to rails to allow this lookup behavior:</p>
+
+<ul>
+<li>If <code>&lt;%= render "/comments/show" %&gt;</code> is called from <code>app/views/posts.html.erb</code>
+
+<ul>
+<li>It will look for <code>app/views/comments/show.html.erb</code> or</li>
+<li>it will exception is raised</li>
+</ul>
+</li>
+<li>If <code>&lt;%= render "comments/show" %&gt;</code> is called from <code>app/views/posts.html.erb</code>
+
+<ul>
+<li>It will look for <code>app/views/posts/comments/show.erb</code> or</li>
+<li>for <code>app/views/application/comments/show.erb</code> or</li>
+<li>it will raise an exception</li>
+</ul>
+</li>
+</ul>
+
+<p>This allows for this kind of system:</p>
+
+<div class="highlight highlight-erb"><pre># app/views/posts/index.html.erb
+
+&lt;<span class="pl-ent">ol</span> <span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>posts<span class="pl-pds">"</span></span>&gt;
+  <span class="pl-pse">&lt;%=</span><span class="pl-s2"> render <span class="pl-s1"><span class="pl-pds">"</span>index/post<span class="pl-pds">"</span></span>, <span class="pl-c1">collection:</span> <span class="pl-vo">@posts</span> </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+&lt;/<span class="pl-ent">ol</span>&gt;</pre></div>
+
+<div class="highlight highlight-erb"><pre># app/views/posts/index/posts.html.erb
+
+&lt;<span class="pl-ent">li</span> <span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>post<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s1"><span class="pl-pds">"</span>post_<span class="pl-pse">&lt;%=</span><span class="pl-s2"> post.id </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span><span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">header</span>&gt;
+    <span class="pl-pse">&lt;%=</span><span class="pl-s2"> post.title </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+  &lt;/<span class="pl-ent">header</span>&gt;
+
+  &lt;<span class="pl-ent">summary</span>&gt;
+    <span class="pl-pse">&lt;%=</span><span class="pl-s2"> post.summary </span><span class="pl-pse"><span class="pl-s2">%</span>&gt;</span>
+  &lt;/<span class="pl-ent">summary</span>&gt;
+&lt;/<span class="pl-ent">li</span>&gt;</pre></div>
+
+<p>The pull request was silenced eventually and seems to be planned for 5.0.0, so I decided to just go ahead and turn it into a monkey-patch gem.</p>
+
+<h1>
+<a id="using" class="anchor" href="#using" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using</h1>
+
+<p>Just require this gem after rails and learn the information above.</p>
+
+<h1>
+<a id="installing" class="anchor" href="#installing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing</h1>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem "rails-subpartial", "~&gt; 1.0"
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself with:</p>
+
+<pre><code>$ gem install rails-subpartial
+</code></pre>
+
+<h1>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h1>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+
+<h1>
+<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span class="octicon octicon-link"></span></a>Changelog</h1>
+
+<ul>
+<li>1.0.0: Initial release</li>
+</ul>
+
+<h1>
+<a id="conduct" class="anchor" href="#conduct" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conduct</h1>
+
+<p>As contributors and maintainers of this project, we pledge to respect all people who contribute through reporting issues, posting feature requests, updating documentation, submitting pull requests or patches, and other activities.</p>
+
+<p>We are committed to making participation in this project a harassment-free experience for everyone, regardless of level of experience, gender, gender identity and expression, sexual orientation, disability, personal appearance, body size, race, age, or religion.</p>
+
+<p>Examples of unacceptable behavior by participants include the use of sexual language or imagery, derogatory comments or personal attacks, trolling, public or private harassment, insults, or other unprofessional conduct.</p>
+
+<p>Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct. Project maintainers who do not follow the Code of Conduct may be removed from the project team.</p>
+
+<p>Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening an issue or contacting one or more of the project maintainers.</p>
+
+<p>This Code of Conduct is adapted from the <a href="http:contributor-covenant.org">Contributor Covenant</a>, version 1.0.0, available at <a href="http://contributor-covenant.org/version/1/0/0/">http://contributor-covenant.org/version/1/0/0/</a></p>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
+
+<p>Copyright (c) 2014 Kurtis Rainbolt-Greene</p>
+
+<p>MIT License</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/krainboltgreene">krainboltgreene</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
